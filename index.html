@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>モタマの古代の残骸占い🔮</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle, #0f1624, #1a1a2e);
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+    }
+    .card {
+      background-color: #16213e;
+      border: 3px solid #f9d923;
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 420px;
+      margin: 2rem auto;
+      box-shadow: 0 0 20px rgba(255, 223, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    .motama-bg {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 110px;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+    .result {
+      font-size: 1.5rem;
+      margin: 1.2rem 0;
+    }
+    .lucky {
+      font-size: 1.2rem;
+      color: #ffdd57;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      background-color: #0f3460;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00a8cc;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌟モタマの古代の残骸占い🌟</h1>
+  <div class="card">
+    <img id="bgImage" class="motama-bg" src="" alt="Motama" />
+    <div class="result" id="fortuneResult">今日の運勢は…？</div>
+    <div class="lucky" id="luckyTool"></div>
+    <button onclick="drawFortune()">占う！</button>
+  </div>
+
+  <script>
+    const expressions = [
+      { range: [90, 100], image: 'surprised.png' },
+      { range: [75, 89], image: 'smile.png' },
+      { range: [60, 74], image: 'serious.png' },
+      { range: [45, 59], image: 'trouble.png' },
+      { range: [0, 44], image: 'scared.png' },
+    ];
+
+    const tools = ["ネザライトピッケル", "耐火ポーション", "エンダーチェスト", "ビーコン", "ベッド（爆破式）"];
+
+    function drawFortune() {
+      const score = Math.floor(Math.random() * 101);
+      document.getElementById("fortuneResult").textContent = `古代の残骸採掘運：${score}%`;
+      document.getElementById("luckyTool").textContent = `ラッキーツール：${tools[Math.floor(Math.random() * tools.length)]}`;
+
+      for (let e of expressions) {
+        if (score >= e.range[0] && score <= e.range[1]) {
+          document.getElementById("bgImage").src = e.image;
+          break;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
