@@ -3,89 +3,116 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>モタマの古代の残骸占い🔮</title>
+  <title>🔮モタマのマイクラ占い🔮</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: radial-gradient(circle, #0f1624, #1a1a2e);
-      color: #fff;
+      font-family: 'Arial', sans-serif;
       text-align: center;
-      padding: 2rem;
+      background: linear-gradient(to bottom, #b3e5fc, #fffde7);
+      padding: 30px;
     }
-    .card {
-      background-color: #16213e;
-      border: 3px solid #f9d923;
+    .container {
+      background-color: #ffffffdd;
       border-radius: 20px;
-      padding: 2rem;
-      max-width: 420px;
-      margin: 2rem auto;
-      box-shadow: 0 0 20px rgba(255, 223, 0, 0.5);
-      position: relative;
-      overflow: hidden;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      margin: auto;
     }
-    .motama-bg {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      width: 110px;
-      opacity: 0.25;
-      pointer-events: none;
+    select, button {
+      padding: 10px;
+      font-size: 1em;
+      margin: 10px;
     }
-    .result {
-      font-size: 1.5rem;
-      margin: 1.2rem 0;
+    #result {
+      font-size: 1.1em;
+      font-weight: bold;
+      margin-top: 20px;
     }
-    .lucky {
-      font-size: 1.2rem;
-      color: #ffdd57;
-      margin-bottom: 1rem;
-    }
-    button {
-      padding: 1rem 2rem;
-      font-size: 1rem;
-      background-color: #0f3460;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #00a8cc;
+    #motama-image {
+      margin-top: 20px;
+      max-width: 300px;
     }
   </style>
 </head>
 <body>
-  <h1>🌟モタマの古代の残骸占い🌟</h1>
-  <div class="card">
-    <img id="bgImage" class="motama-bg" src="" alt="Motama" />
-    <div class="result" id="fortuneResult">今日の運勢は…？</div>
-    <div class="lucky" id="luckyTool"></div>
-    <button onclick="drawFortune()">占う！</button>
+  <h1>🔮モタマのマイクラ占い🔮</h1>
+  <div class="container">
+    <label for="genre">ジャンルを選んでね：</label>
+    <select id="genre">
+      <option value="remnant">古代の残骸採掘運</option>
+      <option value="villager">村人ガチャ運</option>
+      <option value="cave">洞窟探索の運</option>
+      <option value="fishing">釣り運</option>
+      <option value="monster">モンスター予報</option>
+      <option value="pvp">PvPバトル運</option>
+      <option value="rare">激レア運</option>
+    </select>
+    <br />
+    <button onclick="uranau()">占う！</button>
+    <div id="result"></div>
+    <img id="motama-image" src="" alt="モタマの表情" />
   </div>
 
   <script>
-    const expressions = [
-      { range: [90, 100], image: 'surprised.png' },
-      { range: [75, 89], image: 'smile.png' },
-      { range: [60, 74], image: 'serious.png' },
-      { range: [45, 59], image: 'trouble.png' },
-      { range: [0, 44], image: 'scared.png' },
+    const tools = {
+      remnant: ["ネザライトピッケル", "TNT", "金のツルハシ", "耐火ポーション"],
+      villager: ["石工", "釣り師", "司書", "農民"],
+      cave: ["たいまつ", "水バケツ", "盾", "鉄の剣"],
+      fishing: ["にんじん付きの棒", "釣竿", "水中呼吸ポーション"],
+      monster: ["ウィザースケルトン", "クリーパー", "スライム", "ゾンビ"],
+      pvp: ["ダイヤ剣", "弓", "スプラッシュポーション", "金リンゴ"],
+      rare: ["スポナー", "宝の地図", "金装備ゾンビ", "青氷"]
+    };
+
+    const comments = [
+      "欲張りすぎるとマグマに飲まれちゃうにゃ🔥",
+      "今日の残骸は、気まぐれな子。焦らずゆっくり探すにゃ",
+      "1ブロック掘って、ひと呼吸。運も整うにゃ〜🌿",
+      "ネザーって怖いけど…勇気は残骸を呼ぶのだにゃ💎",
+      "ツルハシよりも大事なのは、心の余裕だにゃ✨",
+      "今日も掘り進めよう、希望という名の道をにゃ！",
+      "掘っても掘っても出ない日もある。そういう日は、運が蓄積中なのにゃ",
+      "ちょっと下がって横道、それがラッキールートかもにゃ",
+      "“何もない”という情報も、宝の地図だにゃ",
+      "運をつかむには、まず笑顔にゃっ😸",
+      "「今日は左壁沿い」…って古代のモタマが言ってたにゃ",
+      "残骸より、今日のあなたの努力がレアだにゃ",
+      "本当にツイてる日は、溶岩すら道を開けてくれるにゃ",
+      "無理せず今日は資材整理。それも大事な冒険準備にゃ",
+      "TNTドーン！もいいけど、安全第一でいこうにゃ🧨",
+      "失敗したら、うまくいく方法を1つ知れたってことにゃ♪",
+      "運はランダム。でも気分は自分で選べるにゃ！",
+      "今日のネザー、ちょっと気まぐれかも？様子見にゃ〜",
+      "急がば回れ。ネザーでは特ににゃ💨",
+      "トロッコに乗った気持ちで、流れに任せるのもアリだにゃ🚋",
+      "砂利ゾーンの先に希望があるかもにゃ",
+      "掘ったら寝よう、寝たら運が戻るって信じてにゃ🛏️",
+      "地味な作業こそ、輝く一歩にゃ〜",
+      "爆発しなければ勝ちにゃ（物理）",
+      "モタマも昔は溶岩に落ちたにゃ…でも戻ってこれたにゃ🔥",
+      "大事なのは数じゃなく“出会い”にゃ",
+      "ハズレを引くたび、アタリが近づいてる証拠にゃ✨",
+      "残骸はいつも、ほんのちょっと遠くにあるにゃ",
+      "ネザーの静寂が、運を呼ぶときもあるにゃ…しーっ",
+      "最後の1掘りで奇跡が起きる、そんな日もあるにゃ！"
     ];
 
-    const tools = ["ネザライトピッケル", "耐火ポーション", "エンダーチェスト", "ビーコン", "ベッド（爆破式）"];
+    const images = ["smile.png", "serious.png", "trouble.png", "surprised.png", "scared.png"];
 
-    function drawFortune() {
-      const score = Math.floor(Math.random() * 101);
-      document.getElementById("fortuneResult").textContent = `古代の残骸採掘運：${score}%`;
-      document.getElementById("luckyTool").textContent = `ラッキーツール：${tools[Math.floor(Math.random() * tools.length)]}`;
+    function uranau() {
+      const genre = document.getElementById("genre").value;
+      const luck = Math.floor(Math.random() * 100) + 1;
+      const toolList = tools[genre];
+      const tool = toolList[Math.floor(Math.random() * toolList.length)];
+      const comment = comments[Math.floor(Math.random() * comments.length)];
+      const image = images[Math.floor(Math.random() * images.length)];
+      const genreLabel = document.getElementById("genre").selectedOptions[0].text;
 
-      for (let e of expressions) {
-        if (score >= e.range[0] && score <= e.range[1]) {
-          document.getElementById("bgImage").src = e.image;
-          break;
-        }
-      }
+      let resultText = `${genreLabel}：${luck}% ｜ ${tool}<br><br>「${comment}」`;
+
+      document.getElementById("result").innerHTML = resultText;
+      document.getElementById("motama-image").src = image;
     }
   </script>
 </body>
